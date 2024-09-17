@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "ebe1313d-c07a-4da6-a541-dc547564136c",
+		"name": "Universidad API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33067864"
+	},
+	"item": [
+		{
+			"name": "Cursos",
+			"item": [
+				{
+					"name": "Get All Cursos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/cursos"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Curso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Introducción a la Programación\",\n  \"descripcion\": \"Curso básico de programación para principiantes\",\n  \"profesor\": 1\n}"
+						},
+						"url": "http://localhost:3000/cursos"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Curso by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/cursos/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Curso",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Introducción a la Programación Actualizado\",\n  \"descripcion\": \"Curso básico actualizado de programación para principiantes\",\n  \"profesor\": 1\n}"
+						},
+						"url": "http://localhost:3000/cursos/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Curso",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3000/cursos/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estudiantes",
+			"item": [
+				{
+					"name": "Get All Estudiantes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/estudiantes"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Estudiante",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": \"12345678\",\n  \"nombre\": \"Ana\",\n  \"apellido\": \"García\",\n  \"email\": \"ana.garcia@email.com\"\n}"
+						},
+						"url": "http://localhost:3000/estudiantes"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Estudiante by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/estudiantes/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Estudiante",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": \"12345678\",\n  \"nombre\": \"Ana María\",\n  \"apellido\": \"García\",\n  \"email\": \"ana.garcia@email.com\"\n}"
+						},
+						"url": "http://localhost:3000/estudiantes/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Estudiante",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3000/estudiantes/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profesores",
+			"item": [
+				{
+					"name": "Get All Profesores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/profesores"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Profesor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": \"11223344\",\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"email\": \"juan.perez@universidad.edu\",\n  \"profesion\": \"Ingeniero de Software\",\n  \"telefono\": \"1234567890\"\n}"
+						},
+						"url": "http://localhost:3000/profesores"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profesor by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/profesores/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profesor",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": \"11223344\",\n  \"nombre\": \"Juan Carlos\",\n  \"apellido\": \"Pérez\",\n  \"email\": \"juan.perez@universidad.edu\",\n  \"profesion\": \"Ingeniero de Software Senior\",\n  \"telefono\": \"1234567890\"\n}"
+						},
+						"url": "http://localhost:3000/profesores/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Profesor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3000/profesores/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Curso-Estudiante",
+			"item": [
+				{
+					"name": "Get All Curso-Estudiante",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/cursos-estudiantes"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Curso-Estudiante",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"estudiante\": 1,\n  \"curso\": 1,\n  \"nota\": 8.5,\n  \"fecha\": \"2024-03-15\"\n}"
+						},
+						"url": "http://localhost:3000/cursos-estudiantes"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Curso-Estudiante by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/cursos-estudiantes/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Curso-Estudiante",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"estudiante\": 1,\n  \"curso\": 1,\n  \"nota\": 9.0,\n  \"fecha\": \"2024-03-16\"\n}"
+						},
+						"url": "http://localhost:3000/cursos-estudiantes/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Curso-Estudiante",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3000/cursos-estudiantes/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Curso-Estudiante by Estudiante ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/cursos-estudiantes/estudiante/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Curso-Estudiante by Curso ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/cursos-estudiantes/curso/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Curso-Estudiante by Nota",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/cursos-estudiantes/nota/8.5"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
