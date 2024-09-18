@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  univdb:
+    container_name: "db"
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_DATABASE: "univdb"
+      MYSQL_USER: "groot"
+      MYSQL_PASSWORD: "123"
+      MYSQL_ROOT_PASSWORD: "123"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    volumes:
+      - .:/src/app
+    depends_on:
+      - univdb
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_NAME=univdb
+      - DATABASE_USER=groot
+      - DATABASE_PASSWORD=123
+      - DATABASE_PORT=3306
+
+    command: ["npm", "run", "dev"]
