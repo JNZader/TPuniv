@@ -5,31 +5,31 @@ services:
     container_name: "db"
     image: mysql:5.7
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     command: --init-file /docker-entrypoint-initdb.d/init.sql
     environment:
-      MYSQL_DATABASE: "univdb"
-      MYSQL_USER: "groot"
-      MYSQL_PASSWORD: "123"
-      MYSQL_ROOT_PASSWORD: "123"
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3003:3003"
+      - "${PORT}:${PORT}"
     volumes:
       - .:/src/app
     depends_on:
       - univdb
     environment:
-      - DATABASE_HOST=db
-      - DATABASE_NAME=univdb
-      - DATABASE_USER=groot
-      - DATABASE_PASSWORD=123
-      - DATABASE_PORT=3306
-
+      - DATABASE_HOST=${DB_HOST}
+      - DATABASE_NAME=${DB_NAME}
+      - DATABASE_USER=${DB_USERNAME}
+      - DATABASE_PASSWORD=${DB_PASSWORD}
+      - DATABASE_PORT=${DB_PORT}
+      - NODE_ENV=${NODE_ENV}
     command: ["npm", "run", "dev"]
