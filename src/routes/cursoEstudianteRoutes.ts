@@ -1,18 +1,15 @@
 import { Router } from "express";
 import { CursoEstudianteController } from "../controllers/CursoEstudianteController";
 import { CursoEstudianteService } from "../services/CursoEstudianteService";
-import { CursoEstudiante } from "../models/cursoEstudiante";
 import { AppDataSource } from "../database/data-source";
 import { CursoService } from "../services/CursoService";
-import { Curso } from "../models/curso";
 import { EstudianteService } from "../services/EstudianteService";
-import { Estudiante } from "../models/estudiante";
 
 const router = Router();
 const cursoEstudianteController = new CursoEstudianteController(
-  new CursoEstudianteService(CursoEstudiante,AppDataSource),
-  new CursoService(Curso,AppDataSource),
-  new EstudianteService(Estudiante,AppDataSource)
+  new CursoEstudianteService(AppDataSource),
+  new CursoService(AppDataSource),
+  new EstudianteService(AppDataSource)
 );
 
 router
@@ -24,7 +21,7 @@ router
   .route("/:id")
   .get((req, res) => cursoEstudianteController.getOne(req, res))
   .put((req, res) => cursoEstudianteController.update(req, res))
-  .delete((req, res) => cursoEstudianteController.delete(req, res));
+  .delete((req, res,next) => cursoEstudianteController.delete(req, res,next));
 
 router
   .route("/estudiante/:idEstudiante")

@@ -1,43 +1,71 @@
 import { CursoEstudiante } from '../models/cursoEstudiante';
 import { BaseService } from './baseService';
+import { DataSource, EntityManager } from 'typeorm';
 
 export class CursoEstudianteService extends BaseService<CursoEstudiante> {
-    async findAll(): Promise<CursoEstudiante[]> {
-        return (await this.execRepository).find({
-            relations: ['curso', 'estudiante'], 
-        });
-    }
+  constructor(dataSource: DataSource) {
+    super(CursoEstudiante, dataSource);
+  }
 
-    async findOne(id: number): Promise<CursoEstudiante | null> {
-        return (await this.execRepository).findOne({
-            where: { id },
-            relations: ['curso', 'estudiante'], 
-        });
-    }
+  // Obtener todos los CursoEstudiante con las relaciones definidas
+  async findAll(): Promise<CursoEstudiante[]> {
+    return this.repository.find({
+      relations: ['curso', 'estudiante'], // Relación con Curso y Estudiante
+    });
+  }
 
-    async create(cursoEstudiante: Partial<CursoEstudiante>): Promise<CursoEstudiante> {
-        const newCursoEstudiante = (await this.execRepository).create(cursoEstudiante);
-        return (await this.execRepository).save(newCursoEstudiante);
-    }
+  // Obtener un CursoEstudiante por ID con las relaciones definidas
+  async findOne(id: number): Promise<CursoEstudiante | null> {
+    return this.repository.findOne({
+      where: { id },
+      relations: ['curso', 'estudiante'], // Relación con Curso y Estudiante
+    });
+  }
 
-    async update(id: number, cursoEstudiante: Partial<CursoEstudiante>): Promise<CursoEstudiante | null> {
-        await (await this.execRepository).update(id, cursoEstudiante);
-        return this.findOne(id);
-    }
+  // Crear un nuevo CursoEstudiante
+  async create(cursoEstudiante: Partial<CursoEstudiante>): Promise<CursoEstudiante> {
+    return this.dataSource.transaction(async (entityManager: EntityManager) => {
+      const repository = entityManager.getRepository(CursoEstudiante);
+      const newCursoEstudiante = repository.create(cursoEstudiante); // Crea una instancia de CursoEstudiante
+      return repository.save(newCursoEstudiante); // Guarda la nueva instancia
+    });
+  }
 
-    async delete(id: number): Promise<void> {
-        await (await this.execRepository).delete(id);
-    }
+  // Actualizar un CursoEstudiante por ID
+  async update(id: number, cursoEstudiante: Partial<CursoEstudiante>): Promise<CursoEstudiante | null> {
+    return this.dataSource.transaction(async (entityManager: EntityManager) => {
+      const repository = entityManager.getRepository(CursoEstudiante);
+      await repository.update(id, cursoEstudiante); // Actualiza el CursoEstudiante
+      return repository.findOneBy({ id }); // Retorna el CursoEstudiante actualizado
+    });
+  }
 
-    async findByEstudianteId(idEstudiante: number): Promise<CursoEstudiante[]> {
-        return (await this.execRepository).find({ where: { estudiante: { id: idEstudiante } } });
-    }
+  // Eliminar un CursoEstudiante por ID
+  async delete(id: number): Promise<void> {
+    return this.dataSource.transaction(async (entityManager: EntityManager) => {
+      const repository = entityManager.getRepository(CursoEstudiante);
+      await repository.delete(id); // Elimina el CursoEstudiante por ID
+    });
+  }
 
-    async findByCursoId(idCurso: number): Promise<CursoEstudiante[]> {
-        return (await this.execRepository).find({ where: { curso: { id: idCurso } } });
-    }
+  // Obtener CursoEstudiante por estudiante ID
+  async findByEstudianteId(idEstudiante: number): Promise<CursoEstudiante[]> {
+    return this.repository.find({
+      where: { estudiante: { id: idEstudiante } },
+      relations: ['curso', 'estudiante'],
+    });
+  }
 
-    async findByNota(nota: number): Promise<CursoEstudiante[]> {
-        return (await this.execRepository).find({ where: { nota } });
-    }
+  // Obtener CursoEstudiante por curso ID
+  async findByCursoId(idCurso: number): Promise<CursoEstudiante[]> {
+    return this.repository.find({
+      where: { curso: { id: idCurso } },
+      relations: ['curso', 'estudiante'],
+    });
+  }
+
+  // Obtener CursoEstudiante por nota
+  async findByNota(nota: number): Promise<CursoEstudiante[]> {
+    return this.repository.find({ where: { nota }, relations: ['curso', 'estudiante'] });
+  }
 }

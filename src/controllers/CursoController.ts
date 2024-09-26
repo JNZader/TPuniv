@@ -1,14 +1,15 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { CursoService } from '../services/CursoService';
 import { validate } from 'class-validator';
 import { Curso } from '../models/curso';
 import { ProfesorService } from '../services/ProfesorService'; // Importar el servicio de profesor
 
+
 export class CursoController {
     constructor(
         private readonly cursoService: CursoService,
         private readonly profesorService: ProfesorService // Inyectar el servicio de profesor
-    ) {}
+    ) { }
 
     async getAll(req: Request, res: Response): Promise<Response> {
         const cursos = await this.cursoService.findAll();
@@ -73,8 +74,43 @@ export class CursoController {
         return res.json(cursoActualizado);
     }
 
-    async delete(req: Request, res: Response): Promise<Response> {
-        await this.cursoService.delete(Number(req.params.id));
-        return res.status(204).send();
+    async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            await this.cursoService.delete(Number(req.params.id));
+            return res.status(204).send();
+
+        } catch (error) {
+
+            next(error);
+
+        }
+    }
+
+    async getByNombre(req: Request, res: Response): Promise<Response> {
+        const nombre = req.params.nombre;
+        if (!nombre) {
+            return res.status(400).json({ message: 'El nombre es requerido' });
+        }
+        const cursos = await this.cursoService.findByNombre(nombre);
+        return res.json(cursos);
+    }
+
+    async getByDescripcion(req: Request, res: Response): Promise<Response> {
+        const descripcion = req.params.descripcion;
+        if (!descripcion) {
+            return res.status(400).json({ message: 'La descripción es requerida' });
+        }
+        const cursos = await this.cursoService.findByDescripcion(descripcion);
+        return res.json(cursos);
+    }
+
+    async getByProfesorId(req: Request, res: Response): Promise<Response> {
+        const profesorId = Number(req.params.profesorId);
+        if (isNaN(profesorId)) {
+            return res.status(400).json({ message: 'El ID del profesor debe ser un número válido' });
+        }
+        const cursos = await this.cursoService.findByProfesorId(profesorId);
+        return res.json(cursos);
     }
 }

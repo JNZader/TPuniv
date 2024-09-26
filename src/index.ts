@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { AppDataSource } from "./database/data-source";
+import { initializeDatabase } from "./database/data-source";
 import app from './app';
 
 dotenv.config();
@@ -18,14 +18,5 @@ async function main() {
   }
 }
 
-async function initializeDatabase() {
-  try {
-    await AppDataSource.initialize();
-    console.log("Base de datos inicializada!");
-  } catch (error) {
-    console.error("Error durante la inicializacion de la base de datos", error);
-    throw error;
-  }
-}
 
 main();

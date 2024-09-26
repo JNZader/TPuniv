@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { EstudianteService } from '../services/EstudianteService';
 import { validate } from 'class-validator';
 import { Estudiante } from '../models/estudiante';
 
 export class EstudianteController {
-    constructor(private readonly estudianteService: EstudianteService) {}
+    constructor(private readonly estudianteService: EstudianteService) { }
 
     async getAll(req: Request, res: Response): Promise<Response> {
         const estudiantes = await this.estudianteService.findAll();
@@ -59,8 +59,52 @@ export class EstudianteController {
         return res.json(estudiante1);
     }
 
-    async delete(req: Request, res: Response): Promise<Response> {
-        await this.estudianteService.delete(Number(req.params.id));
-        return res.status(204).send();
+    async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            await this.estudianteService.delete(Number(req.params.id));
+            return res.status(204).send();
+
+        } catch (error) {
+
+            next(error);
+
+        }
+    }
+
+    async getByDni(req: Request, res: Response): Promise<Response> {
+        const dni = req.params.dni;
+        if (!dni) {
+            return res.status(400).json({ message: 'El DNI es requerido' });
+        }
+        const estudiantes = await this.estudianteService.findByDni(dni);
+        return res.json(estudiantes);
+    }
+
+    async getByNombre(req: Request, res: Response): Promise<Response> {
+        const nombre = req.params.nombre;
+        if (!nombre) {
+            return res.status(400).json({ message: 'El nombre es requerido' });
+        }
+        const estudiantes = await this.estudianteService.findByNombre(nombre);
+        return res.json(estudiantes);
+    }
+
+    async getByApellido(req: Request, res: Response): Promise<Response> {
+        const apellido = req.params.apellido;
+        if (!apellido) {
+            return res.status(400).json({ message: 'El apellido es requerido' });
+        }
+        const estudiantes = await this.estudianteService.findByApellido(apellido);
+        return res.json(estudiantes);
+    }
+
+    async getByEmail(req: Request, res: Response): Promise<Response> {
+        const email = req.params.email;
+        if (!email) {
+            return res.status(400).json({ message: 'El email es requerido' });
+        }
+        const estudiantes = await this.estudianteService.findByEmail(email);
+        return res.json(estudiantes);
     }
 }

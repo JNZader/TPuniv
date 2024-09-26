@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { CursoEstudianteService } from '../services/CursoEstudianteService';
 import { CursoService } from '../services/CursoService';
 import { EstudianteService } from '../services/EstudianteService';
@@ -91,9 +91,17 @@ export class CursoEstudianteController {
         return res.json(cursoEstudiante);
     }
 
-    async delete(req: Request, res: Response): Promise<Response> {
-        await this.cursoEstudianteService.delete(Number(req.params.id));
-        return res.status(204).send();
+    async delete(req: Request, res: Response,next: NextFunction) {
+        try {
+            
+            await this.cursoEstudianteService.delete(Number(req.params.id));
+            return res.status(204).send();
+
+        } catch (error) {
+            
+            next(error);
+            
+        }
     }
 
     async getByEstudianteId(req: Request, res: Response): Promise<Response> {

@@ -2,20 +2,19 @@ import { EntityTarget, Repository } from "typeorm";
 import { BaseEntity } from "../models/baseEntity";
 import { DataSource } from "typeorm";
 
-export class BaseService<e extends BaseEntity> {
-  public execRepository: Promise<Repository<e>>;
+export class BaseService<E extends BaseEntity> {
+  protected repository: Repository<E>;
+  protected dataSource: DataSource; // Cambiado a 'protected' para que pueda ser usado en clases derivadas
 
   constructor(
-    private getEntity: EntityTarget<e>,
-    private dataSource: DataSource
+    private getEntity: EntityTarget<E>, 
+    dataSource: DataSource
   ) {
-    this.execRepository = this.initRepository(getEntity);
+    this.dataSource = dataSource;
+    this.repository = this.dataSource.getRepository(getEntity);
   }
 
-  async initRepository<T>(en: EntityTarget<e>): Promise<Repository<e>> {
-    return this.dataSource.manager.getRepository(en);
-  }
-
+  // Método para cerrar la conexión
   async closeConnection(): Promise<void> {
     await this.dataSource.destroy();
   }
