@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, OneToMany, Unique } from "typeorm";
 import { BaseEntity } from "./baseEntity";
 import { CursoEstudiante } from "./cursoEstudiante";
 import { IsEmail, IsNotEmpty, IsString, Length, Matches, MaxLength } from "class-validator";
@@ -11,6 +11,7 @@ export class Estudiante extends BaseEntity {
   @IsNotEmpty({ message: 'El DNI no puede estar vacío' })
   @Length(8, 8, { message: 'El DNI debe tener exactamente 8 caracteres' })
   @Matches(/^[0-9]+$/, { message: 'El DNI debe contener solo dígitos' })
+  @Unique(["dni"])
   dni: string;
 
   @Column()
